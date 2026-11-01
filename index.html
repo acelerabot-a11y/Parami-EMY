@@ -172,6 +172,7 @@ html, body {
   -webkit-tap-highlight-color: transparent;
   user-select: none;
 }
+#bear-container svg { width: 100%; height: 100%; }
 #bear-container:hover { transform: scale(1.04); }
 #bear-container:active { transform: scale(0.97); }
 
@@ -182,8 +183,10 @@ html, body {
   25% { transform: translateY(-4px) rotate(0.5deg); }
   75% { transform: translateY(-2px) rotate(-0.5deg); }
 }
-#bear-arm-left { animation: armLeft 4s ease-in-out infinite; transform-origin: 30% 40%; }
-#bear-arm-right { animation: armRight 4s ease-in-out infinite; transform-origin: 70% 40%; }
+/* Los brazos giran desde su propio hombro (no desde el centro del dibujo) */
+#bear-arm-left, #bear-arm-right { transform-box: fill-box; }
+#bear-arm-left  { animation: armLeft 4s ease-in-out infinite;  transform-origin: 85% 15%; }
+#bear-arm-right { animation: armRight 4s ease-in-out infinite; transform-origin: 15% 15%; }
 @keyframes armLeft {
   0%, 100% { transform: rotate(0deg); }
   50% { transform: rotate(5deg); }
@@ -192,7 +195,7 @@ html, body {
   0%, 100% { transform: rotate(0deg); }
   50% { transform: rotate(-5deg); }
 }
-#bear-heart { animation: heartBeat 1.4s ease-in-out infinite; transform-origin: center; }
+#bear-heart { animation: heartBeat 1.4s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
 @keyframes heartBeat {
   0%, 100% { transform: scale(1); }
   15% { transform: scale(1.15); }
@@ -201,15 +204,11 @@ html, body {
   60% { transform: scale(1); }
 }
 
-/* Estado abrazando */
-.hugging #bear-arm-left { animation: hugleft 0.4s ease forwards; }
-.hugging #bear-arm-right { animation: hugright 0.4s ease forwards; }
-@keyframes hugleft {
-  to { transform: rotate(-30deg) translateY(-10px); }
-}
-@keyframes hugright {
-  to { transform: rotate(30deg) translateY(-10px); }
-}
+/* Estado abrazando: los brazos bajan desde el hombro y cruzan por delante de la barriga */
+.hugging #bear-arm-left  { animation: hugLeft 0.5s ease forwards; }
+.hugging #bear-arm-right { animation: hugRight 0.5s ease forwards; }
+@keyframes hugLeft  { to { transform: translateX(18px) rotate(-60deg); } }
+@keyframes hugRight { to { transform: translateX(-18px) rotate(60deg); } }
 .hugging #bear-body-group { animation: hugBounce 0.5s ease forwards; }
 @keyframes hugBounce {
   0% { transform: translateY(0); }
@@ -536,16 +535,6 @@ html, body {
         </defs>
 
         <g id="bear-body-group" filter="url(#softShadow)">
-          <!-- Brazos -->
-          <g id="bear-arm-left">
-            <ellipse cx="38" cy="130" rx="22" ry="14" fill="url(#bodyGrad)" transform="rotate(-30 38 120)"/>
-            <ellipse cx="22" cy="142" rx="13" ry="10" fill="url(#bodyGrad)" transform="rotate(-15 22 142)"/>
-          </g>
-          <g id="bear-arm-right">
-            <ellipse cx="152" cy="130" rx="22" ry="14" fill="url(#bodyGrad)" transform="rotate(30 152 120)"/>
-            <ellipse cx="168" cy="142" rx="13" ry="10" fill="url(#bodyGrad)" transform="rotate(15 168 142)"/>
-          </g>
-
           <!-- Cuerpo -->
           <ellipse cx="95" cy="148" rx="52" ry="56" fill="url(#bodyGrad)"/>
           <!-- Barriga -->
@@ -557,6 +546,16 @@ html, body {
           <!-- Patas -->
           <ellipse cx="72" cy="202" rx="20" ry="9" fill="#c0804e"/>
           <ellipse cx="118" cy="202" rx="20" ry="9" fill="#c0804e"/>
+
+          <!-- Brazos (dibujados después del cuerpo para que queden DELANTE al abrazar) -->
+          <g id="bear-arm-left">
+            <ellipse cx="38" cy="130" rx="22" ry="14" fill="url(#bodyGrad)" transform="rotate(-30 38 120)"/>
+            <ellipse cx="22" cy="142" rx="13" ry="10" fill="url(#bodyGrad)" transform="rotate(-15 22 142)"/>
+          </g>
+          <g id="bear-arm-right">
+            <ellipse cx="152" cy="130" rx="22" ry="14" fill="url(#bodyGrad)" transform="rotate(30 152 120)"/>
+            <ellipse cx="168" cy="142" rx="13" ry="10" fill="url(#bodyGrad)" transform="rotate(15 168 142)"/>
+          </g>
 
           <!-- Cuello -->
           <ellipse cx="95" cy="100" rx="26" ry="14" fill="url(#bodyGrad)"/>
@@ -597,9 +596,11 @@ html, body {
           <path d="M 80 112 L 95 120 L 110 112 L 95 104 Z" fill="#f4a8c5"/>
           <circle cx="95" cy="112" r="4" fill="#e8809a"/>
 
-          <!-- Corazón que sostiene -->
-          <g id="bear-heart" transform="translate(95, 155)">
-            <text text-anchor="middle" y="0" font-size="26">❤️</text>
+          <!-- Corazón que sostiene (queda delante de las patitas al abrazar) -->
+          <g transform="translate(95, 155)">
+            <g id="bear-heart">
+              <text text-anchor="middle" y="0" font-size="26">❤️</text>
+            </g>
           </g>
         </g>
       </svg>
@@ -806,6 +807,7 @@ function spawnSparkles(x, y, count=5) {
 // ============================================================
 let bearHugged = false;
 let bearAnimTimeout = null;
+let hugTimer = null;
 
 function hugBear() {
   if (bearAnimTimeout) return;
@@ -823,8 +825,12 @@ function hugBear() {
 function triggerHug() {
   const bc = document.getElementById('bear-container');
   const hugMsg = document.getElementById('hug-msg');
-  bc.classList.toggle('hugging');
   hugMsg.classList.add('show');
+
+  // Abraza un ratito y suelta solo (si se vuelve a tocar, el abrazo se alarga)
+  bc.classList.add('hugging');
+  clearTimeout(hugTimer);
+  hugTimer = setTimeout(() => bc.classList.remove('hugging'), 2500);
 
   const rect = bc.getBoundingClientRect();
   spawnHearts(14, rect.left + rect.width/2, rect.top + 40);
@@ -1037,7 +1043,7 @@ document.addEventListener('click', function(e) {
 });
 
 // ============================================================
-// SORPRESITA OCULTA: doble tap en estrellas
+// SORPRESITA OCULTA: triple tap en estrellas
 // ============================================================
 let tapCount = 0;
 let tapTimer = null;
