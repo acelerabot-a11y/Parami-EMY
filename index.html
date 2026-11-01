@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Para Emy 🧸❤️</title>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rosa: #f4a8c5;
+  --rosa-suave: #fde0ec;
+  --crema: #fff5e6;
+  --lavanda: #d5b8f0;
+  --lavanda-suave: #ede0fa;
+  --marron: #c49a6c;
+  --marron-oscuro: #8b6245;
+  --noche: #1a0f2e;
+  --noche-media: #2d1b4e;
+  --noche-claro: #3d2466;
+  --dorado: #f7c948;
+  --blanco: #fff;
+  --texto: #5c3a5f;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: var(--noche);
+  color: var(--blanco);
+}
+
+/* ===== ESCENAS ===== */
+.scene {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.8s ease;
+  overflow: hidden;
+}
+.scene.active {
+  opacity: 1; pointer-events: all;
+}
+
+/* ===== FONDO NOCTURNO ===== */
+.sky {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, #0d0720 0%, #1a0f2e 40%, #2d1b4e 80%, #3d2466 100%);
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* Estrellas */
+.stars-layer {
+  position: absolute; inset: 0;
+}
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: twinkle var(--dur, 3s) ease-in-out infinite var(--delay, 0s);
+}
+@keyframes twinkle {
+  0%, 100% { opacity: var(--min-op, 0.3); transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+
+/* Nubes */
+.cloud {
+  position: absolute;
+  opacity: 0.18;
+  animation: floatCloud var(--cdur, 60s) linear infinite var(--cdelay, 0s);
+}
+@keyframes floatCloud {
+  0% { transform: translateX(-200px); }
+  100% { transform: translateX(calc(100vw + 200px)); }
+}
+
+/* ===== CONTENIDO DE ESCENAS ===== */
+.scene-content {
+  position: relative; z-index: 10;
+  max-width: 520px; width: 100%;
+  text-align: center;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 18px;
+}
+
+/* ===== TIPOGRAFÍA ===== */
+.title {
+  font-size: clamp(1.6rem, 7vw, 2.4rem);
+  color: var(--rosa);
+  text-shadow: 0 0 20px rgba(244,168,197,0.6);
+  letter-spacing: 1px;
+  line-height: 1.3;
+}
+.subtitle {
+  font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+  color: #e8d0f5;
+  line-height: 1.7;
+  font-style: italic;
+}
+.message-card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(244,168,197,0.3);
+  border-radius: 20px;
+  padding: 22px 24px;
+  width: 100%;
+}
+.message-card p {
+  font-size: clamp(0.88rem, 3.2vw, 1.05rem);
+  color: #f0ddf7;
+  line-height: 1.75;
+}
+
+/* ===== BOTONES ===== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border: none; border-radius: 50px;
+  font-size: clamp(0.9rem, 3.5vw, 1.05rem);
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative; overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #f4a8c5, #c77ddb);
+  color: white;
+  box-shadow: 0 4px 20px rgba(244,168,197,0.45);
+}
+.btn-primary:hover, .btn-primary:active {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 28px rgba(244,168,197,0.6);
+}
+.btn-secondary {
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(244,168,197,0.5);
+  color: #f0ddf7;
+}
+.btn-secondary:hover, .btn-secondary:active {
+  background: rgba(244,168,197,0.2);
+  transform: translateY(-2px);
+}
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -60%;
+  width: 40%; height: 200%;
+  background: rgba(255,255,255,0.25);
+  transform: skewX(-20deg);
+  animation: shine 4s ease-in-out infinite;
+}
+@keyframes shine {
+  0%, 70%, 100% { left: -60%; }
+  40% { left: 120%; }
+}
+
+/* ===== OSITO SVG ===== */
+#bear-container {
+  position: relative;
+  width: 190px; height: 210px;
+  cursor: pointer;
+  filter: drop-shadow(0 8px 24px rgba(196,154,108,0.4));
+  transition: transform 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+#bear-container:hover { transform: scale(1.04); }
+#bear-container:active { transform: scale(0.97); }
+
+/* Animación idle del osito */
+#bear-body-group { animation: bearIdle 4s ease-in-out infinite; transform-origin: center bottom; }
+@keyframes bearIdle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-4px) rotate(0.5deg); }
+  75% { transform: translateY(-2px) rotate(-0.5deg); }
+}
+#bear-arm-left { animation: armLeft 4s ease-in-out infinite; transform-origin: 30% 40%; }
+#bear-arm-right { animation: armRight 4s ease-in-out infinite; transform-origin: 70% 40%; }
+@keyframes armLeft {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(5deg); }
+}
+@keyframes armRight {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-5deg); }
+}
+#bear-heart { animation: heartBeat 1.4s ease-in-out infinite; transform-origin: center; }
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.15); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.1); }
+  60% { transform: scale(1); }
+}
+
+/* Estado abrazando */
+.hugging #bear-arm-left { animation: hugleft 0.4s ease forwards; }
+.hugging #bear-arm-right { animation: hugright 0.4s ease forwards; }
+@keyframes hugleft {
+  to { transform: rotate(-30deg) translateY(-10px); }
+}
+@keyframes hugright {
+  to { transform: rotate(30deg) translateY(-10px); }
+}
+.hugging #bear-body-group { animation: hugBounce 0.5s ease forwards; }
+@keyframes hugBounce {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-12px); }
+  70% { transform: translateY(-6px); }
+  100% { transform: translateY(-8px); }
+}
+
+/* ===== CORAZONES FLOTANTES ===== */
+.floating-heart {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  animation: floatUp var(--dur, 2.5s) ease-out forwards;
+  font-size: var(--size, 22px);
+  color: var(--color, #f4a8c5);
+  text-shadow: 0 0 6px rgba(244,168,197,0.5);
+}
+@keyframes floatUp {
+  0%   { transform: translateY(0) scale(0.5) rotate(var(--rot0, 0deg)); opacity: 1; }
+  60%  { opacity: 1; }
+  100% { transform: translateY(-220px) scale(1.2) rotate(var(--rot1, 15deg)); opacity: 0; }
+}
+
+/* Corazones de fondo de la escena 1 */
+.bg-heart {
+  position: absolute;
+  pointer-events: none;
+  animation: bgHeartFloat var(--bhdur, 8s) ease-in-out infinite var(--bhdelay, 0s);
+  font-size: var(--bhsize, 18px);
+  opacity: 0.2;
+  color: var(--rosa);
+}
+@keyframes bgHeartFloat {
+  0%   { transform: translateY(0) scale(1); opacity: 0.1; }
+  50%  { transform: translateY(-30px) scale(1.1); opacity: 0.25; }
+  100% { transform: translateY(0) scale(1); opacity: 0.1; }
+}
+
+/* ===== ESCENA 1 - BIENVENIDA ===== */
+#scene1 .scene-content { gap: 22px; }
+.welcome-emoji {
+  font-size: 3.5rem;
+  animation: emojiPop 2s ease-in-out infinite;
+}
+@keyframes emojiPop {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  30%       { transform: scale(1.12) rotate(-4deg); }
+  60%       { transform: scale(1.08) rotate(3deg); }
+}
+
+/* ===== ESCENA 3 - CARIÑITOS ===== */
+.carinos-grid {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  justify-content: center; width: 100%;
+}
+.carino-btn {
+  flex: 1 1 calc(33% - 12px);
+  min-width: 90px;
+  padding: 14px 10px;
+  border: none; border-radius: 18px;
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(244,168,197,0.35);
+  color: #f0ddf7;
+  font-family: inherit;
+  font-size: clamp(0.82rem, 3vw, 0.95rem);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.carino-btn:hover, .carino-btn:active {
+  background: rgba(244,168,197,0.22);
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 6px 18px rgba(244,168,197,0.3);
+}
+.response-bubble {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(213,184,240,0.4);
+  border-radius: 18px;
+  padding: 18px 20px;
+  font-size: clamp(0.88rem, 3.2vw, 1rem);
+  color: #f0ddf7;
+  line-height: 1.65;
+  min-height: 60px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+/* ===== ESCENA 4 - SOBRE ===== */
+.envelope-wrapper {
+  perspective: 600px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.envelope {
+  width: 240px; height: 170px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.1s;
+}
+.envelope:hover { transform: translateY(-4px); }
+.env-body {
+  position: absolute; inset: 0;
+  background: linear-gradient(145deg, #f9e8c8, #f4d4a8);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  overflow: hidden;
+}
+.env-flap-back {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(135deg, #f0c988, #e8b870);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+.env-flap {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(135deg, #f7d99a, #edd07e);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  z-index: 5;
+}
+.env-left { position: absolute; bottom: 0; left: 0; width: 50%; height: 55%; background: #edc880; clip-path: polygon(0 0, 0 100%, 100% 100%); }
+.env-right { position: absolute; bottom: 0; right: 0; width: 50%; height: 55%; background: #e8bf70; clip-path: polygon(100% 0, 0 100%, 100% 100%); }
+.env-heart { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -30%); font-size: 2rem; z-index: 10; animation: heartBeat 1.4s ease-in-out infinite; }
+.envelope.opened .env-flap { transform: rotateX(-175deg); }
+
+.letter-reveal {
+  opacity: 0; pointer-events: none;
+  transform: translateY(20px);
+  transition: all 0.6s ease 0.3s;
+  width: 100%;
+}
+.letter-reveal.show {
+  opacity: 1; pointer-events: all;
+  transform: translateY(0);
+}
+.letter-card {
+  background: linear-gradient(135deg, rgba(255,245,230,0.12), rgba(245,208,240,0.12));
+  border: 1px solid rgba(244,168,197,0.3);
+  border-radius: 20px;
+  padding: 22px 20px;
+  font-size: clamp(0.84rem, 3vw, 0.98rem);
+  color: #f0ddf7;
+  line-height: 1.8;
+  text-align: left;
+  max-height: 55vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(244,168,197,0.3) transparent;
+}
+.letter-card p { margin-bottom: 12px; }
+.letter-card p:last-child { margin-bottom: 0; }
+.letter-signature {
+  text-align: right;
+  color: var(--rosa);
+  font-style: italic;
+  margin-top: 4px;
+}
+.env-tap-hint {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.5);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+/* ===== MÚSICA ===== */
+#music-btn {
+  position: fixed; top: 16px; right: 16px;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(244,168,197,0.4);
+  color: white; font-size: 1.2rem;
+  cursor: pointer; z-index: 999;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+#music-btn:hover { background: rgba(244,168,197,0.25); transform: scale(1.1); }
+#music-btn.playing { color: var(--rosa); }
+
+/* ===== NAV DOTS ===== */
+#nav-dots {
+  position: fixed; bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 10px;
+  z-index: 999;
+}
+.dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.dot.active { background: var(--rosa); transform: scale(1.3); }
+
+/* ===== HUG MESSAGE ===== */
+#hug-msg {
+  opacity: 0; max-height: 0; overflow: hidden;
+  transition: all 0.5s ease;
+  width: 100%;
+}
+#hug-msg.show {
+  opacity: 1; max-height: 200px;
+}
+
+/* ===== PARTICLES CANVAS ===== */
+#particles-canvas {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 500;
+}
+
+/* ===== SPARKLE ===== */
+.sparkle {
+  position: fixed; pointer-events: none;
+  z-index: 9998;
+  animation: sparkleAnim 1s ease-out forwards;
+  font-size: 16px;
+}
+@keyframes sparkleAnim {
+  0%   { transform: scale(0) rotate(0deg); opacity: 1; }
+  50%  { transform: scale(1.4) rotate(180deg); opacity: 1; }
+  100% { transform: scale(0.2) rotate(360deg) translateY(-30px); opacity: 0; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 400px) {
+  .scene-content { gap: 14px; }
+  #bear-container { width: 155px; height: 175px; }
+  .envelope { width: 200px; height: 145px; }
+  .message-card { padding: 16px 14px; }
+}
+@media (max-height: 650px) {
+  .scene-content { gap: 10px; }
+  .message-card { padding: 14px; }
+  .btn { padding: 11px 22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     CANVAS PARTÍCULAS
+============================================================ -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- ============================================================
+     BOTÓN MÚSICA
+============================================================ -->
+<button id="music-btn" title="Música ambiental" onclick="toggleMusic()">🎵</button>
+
+<!-- ============================================================
+     NAV DOTS
+============================================================ -->
+<div id="nav-dots">
+  <div class="dot active" onclick="goScene(1)"></div>
+  <div class="dot" onclick="goScene(2)"></div>
+  <div class="dot" onclick="goScene(3)"></div>
+  <div class="dot" onclick="goScene(4)"></div>
+</div>
+
+<!-- ============================================================
+     ESCENA 1 - BIENVENIDA
+============================================================ -->
+<div id="scene1" class="scene active">
+  <div class="sky">
+    <div class="stars-layer" id="stars1"></div>
+    <!-- Corazones fondo -->
+    <div class="bg-heart" style="--bhdur:9s;--bhdelay:0s;--bhsize:22px;left:8%;top:20%">💗</div>
+    <div class="bg-heart" style="--bhdur:7s;--bhdelay:2s;--bhsize:14px;left:80%;top:35%">💕</div>
+    <div class="bg-heart" style="--bhdur:11s;--bhdelay:1s;--bhsize:18px;left:55%;top:75%">🤍</div>
+    <div class="bg-heart" style="--bhdur:8s;--bhdelay:3s;--bhsize:12px;left:20%;top:65%">💗</div>
+    <div class="bg-heart" style="--bhdur:10s;--bhdelay:0.5s;--bhsize:16px;left:90%;top:12%">💕</div>
+  </div>
+
+  <div class="scene-content">
+    <div class="welcome-emoji">🧸</div>
+    <h1 class="title">Holaaaa, Emy,<br>mi niña bonita 🥺❤️</h1>
+    <div class="message-card">
+      <p>Hoy tengo una misión muy importante: robarle una sonrisita, darle muchos cariñitos y recordarle lo especial que es. Así que preparé este rinconcito especialmente para usted. 💗</p>
+    </div>
+    <button class="btn btn-primary btn-shine" onclick="goScene(2)">
+      Entrar a mi rinconcito ✨
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     ESCENA 2 - EL OSITO CONSENTIDOR
+============================================================ -->
+<div id="scene2" class="scene">
+  <div class="sky">
+    <div class="stars-layer" id="stars2"></div>
+  </div>
+
+  <div class="scene-content">
+    <div id="bear-container" onclick="hugBear()" title="¡Tócame!">
+      <!-- SVG OSITO -->
+      <svg viewBox="0 0 190 210" width="190" height="210" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="bodyGrad" cx="50%" cy="45%" r="55%">
+            <stop offset="0%" stop-color="#d4956a"/>
+            <stop offset="100%" stop-color="#a0623a"/>
+          </radialGradient>
+          <radialGradient id="bellyGrad" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="#f5d5b8"/>
+            <stop offset="100%" stop-color="#e8bc98"/>
+          </radialGradient>
+          <radialGradient id="faceGrad" cx="45%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="#d4956a"/>
+            <stop offset="100%" stop-color="#b87248"/>
+          </radialGradient>
+          <radialGradient id="earGrad" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#d4956a"/>
+            <stop offset="100%" stop-color="#a86040"/>
+          </radialGradient>
+          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="rgba(0,0,0,0.25)"/>
+          </filter>
+        </defs>
+
+        <g id="bear-body-group" filter="url(#softShadow)">
+          <!-- Brazos -->
+          <g id="bear-arm-left">
+            <ellipse cx="38" cy="130" rx="22" ry="14" fill="url(#bodyGrad)" transform="rotate(-30 38 120)"/>
+            <ellipse cx="22" cy="142" rx="13" ry="10" fill="url(#bodyGrad)" transform="rotate(-15 22 142)"/>
+          </g>
+          <g id="bear-arm-right">
+            <ellipse cx="152" cy="130" rx="22" ry="14" fill="url(#bodyGrad)" transform="rotate(30 152 120)"/>
+            <ellipse cx="168" cy="142" rx="13" ry="10" fill="url(#bodyGrad)" transform="rotate(15 168 142)"/>
+          </g>
+
+          <!-- Cuerpo -->
+          <ellipse cx="95" cy="148" rx="52" ry="56" fill="url(#bodyGrad)"/>
+          <!-- Barriga -->
+          <ellipse cx="95" cy="155" rx="32" ry="34" fill="url(#bellyGrad)" opacity="0.9"/>
+
+          <!-- Piernas -->
+          <ellipse cx="72" cy="197" rx="18" ry="12" fill="url(#bodyGrad)"/>
+          <ellipse cx="118" cy="197" rx="18" ry="12" fill="url(#bodyGrad)"/>
+          <!-- Patas -->
+          <ellipse cx="72" cy="202" rx="20" ry="9" fill="#c0804e"/>
+          <ellipse cx="118" cy="202" rx="20" ry="9" fill="#c0804e"/>
+
+          <!-- Cuello -->
+          <ellipse cx="95" cy="100" rx="26" ry="14" fill="url(#bodyGrad)"/>
+
+          <!-- Orejas -->
+          <g>
+            <circle cx="58" cy="54" r="18" fill="url(#earGrad)"/>
+            <circle cx="58" cy="54" r="11" fill="#d4856a" opacity="0.6"/>
+          </g>
+          <g>
+            <circle cx="132" cy="54" r="18" fill="url(#earGrad)"/>
+            <circle cx="132" cy="54" r="11" fill="#d4856a" opacity="0.6"/>
+          </g>
+
+          <!-- Cabeza -->
+          <circle cx="95" cy="80" r="44" fill="url(#faceGrad)"/>
+
+          <!-- Hocico -->
+          <ellipse cx="95" cy="96" rx="19" ry="13" fill="#e8b890"/>
+          <!-- Nariz -->
+          <ellipse cx="95" cy="87" rx="7" ry="5" fill="#8b4513"/>
+          <!-- Ojos -->
+          <circle cx="78" cy="73" r="7" fill="#2a1a0e"/>
+          <circle cx="112" cy="73" r="7" fill="#2a1a0e"/>
+          <!-- Brillo ojos -->
+          <circle cx="81" cy="70" r="2.5" fill="white"/>
+          <circle cx="115" cy="70" r="2.5" fill="white"/>
+          <!-- Corazones en ojos (ternura) -->
+          <text x="74" y="77" font-size="8" fill="#ff6b8a" opacity="0.7">♥</text>
+          <text x="108" y="77" font-size="8" fill="#ff6b8a" opacity="0.7">♥</text>
+          <!-- Sonrisa -->
+          <path d="M 83 100 Q 95 112 107 100" stroke="#8b4513" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- Mejillas -->
+          <circle cx="70" cy="91" r="9" fill="#ff8fab" opacity="0.35"/>
+          <circle cx="120" cy="91" r="9" fill="#ff8fab" opacity="0.35"/>
+
+          <!-- Lazo/corbatín -->
+          <path d="M 80 112 L 95 120 L 110 112 L 95 104 Z" fill="#f4a8c5"/>
+          <circle cx="95" cy="112" r="4" fill="#e8809a"/>
+
+          <!-- Corazón que sostiene -->
+          <g id="bear-heart" transform="translate(95, 155)">
+            <text text-anchor="middle" y="0" font-size="26">❤️</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <p class="subtitle" style="font-size:clamp(0.88rem,3.3vw,1rem);color:#f0ddf7;line-height:1.7;">
+      Holaaa, mi niña bonita. Venga, acérquese un poquito...<br>
+      Aquí no se vale estar seria, que mi misión es verla sonreír. 🧸💕
+    </p>
+
+    <button class="btn btn-primary" onclick="triggerHug()">
+      Quiero un abracito 🤗
+    </button>
+
+    <div id="hug-msg">
+      <div class="message-card">
+        <p>¡Ven acá! Abracito apretadito para usted. Aunque sea a través de la pantalla, se lo mando con muchísimo cariño, sintiéndolo como si te tuviera aquí. 🥺❤️</p>
+      </div>
+    </div>
+
+    <button class="btn btn-secondary" onclick="goScene(3)" style="margin-top:4px">
+      Seguir ➜
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     ESCENA 3 - LLUVIA DE CARIÑITOS
+============================================================ -->
+<div id="scene3" class="scene">
+  <div class="sky">
+    <div class="stars-layer" id="stars3"></div>
+  </div>
+
+  <div class="scene-content">
+    <h2 class="title" style="font-size:clamp(1.3rem,5.5vw,1.9rem)">Un rinconcito de cariñitos 💗</h2>
+
+    <div class="message-card">
+      <p>Por si no se lo habían dicho hoy: usted merece cosas bonitas, momentos felices, muchas sonrisas y personas que le hagan sentir lo especial que es. Y yo, por mi parte, quiero aportar unos cuantos motivos para verla sonreír. 🤍</p>
+    </div>
+
+    <div class="carinos-grid">
+      <button class="carino-btn" onclick="giveCarino('caricia')">Una caricia 🥰</button>
+      <button class="carino-btn" onclick="giveCarino('besito')">Un besito 😘</button>
+      <button class="carino-btn" onclick="giveCarino('abrazo')">Otro abrazo 🤍</button>
+    </div>
+
+    <div class="response-bubble" id="response-bubble">
+      <span style="opacity:0.5">Elige algo... 🧸</span>
+    </div>
+
+    <button class="btn btn-primary" onclick="goScene(4)">
+      Hay una sorpresita esperándote 💌
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     ESCENA 4 - SORPRESA FINAL
+============================================================ -->
+<div id="scene4" class="scene">
+  <div class="sky">
+    <div class="stars-layer" id="stars4"></div>
+  </div>
+
+  <div class="scene-content" style="gap:16px">
+    <h2 class="title" style="font-size:clamp(1.2rem,5vw,1.7rem)">Una cosita especial para usted 💌</h2>
+
+    <div class="envelope-wrapper" id="envelope-wrapper" onclick="openEnvelope()">
+      <div class="envelope" id="the-envelope">
+        <div class="env-body">
+          <div class="env-flap-back"></div>
+          <div class="env-left"></div>
+          <div class="env-right"></div>
+          <div class="env-flap" id="env-flap"></div>
+          <div class="env-heart">❤️</div>
+        </div>
+      </div>
+    </div>
+    <p class="env-tap-hint" id="env-hint">Tócame para abrirme ✨</p>
+
+    <div class="letter-reveal" id="letter-reveal">
+      <div class="letter-card">
+        <p>Emy, quería tener un detallito con usted, algo que le recordara que hay alguien que disfruta escucharla, compartir momentos, hacerla reír y consentirla.</p>
+        <p>No necesito una ocasión especial para querer regalarle una sonrisa. Me gusta que podamos compartir esos pequeños momentos y espero que vengan muchos más.</p>
+        <p>Así que guarde este abracito, este besito y todos estos cariñitos para cuando los necesite.</p>
+        <p>Y recuerde que tiene un osito a distancia con muchas ganas de consentirla. 🧸❤️</p>
+        <p class="letter-signature">Con mucho cariño,<br><em>Hades que quiere verla sonreír.</em> 🥺</p>
+      </div>
+    </div>
+
+    <button class="btn btn-secondary" onclick="goScene(1)" style="font-size:0.85rem;padding:10px 20px">
+      🧸 Volver al principio
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     AUDIO - Música ambiental generada con Web Audio API
+============================================================ -->
+<script>
+// ============================================================
+// ESTRELLAS
+// ============================================================
+function createStars(containerId, count) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + 0.8;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      top:${Math.random()*85}%;
+      --dur:${Math.random()*3+2}s;
+      --delay:${Math.random()*4}s;
+      --min-op:${Math.random()*0.3+0.1};
+    `;
+    c.appendChild(s);
+  }
+}
+['stars1','stars2','stars3','stars4'].forEach(id => createStars(id, 80));
+
+// ============================================================
+// NAVEGACIÓN
+// ============================================================
+let currentScene = 1;
+
+function goScene(n) {
+  const old = document.getElementById('scene'+currentScene);
+  const next = document.getElementById('scene'+n);
+  if (!next || n === currentScene) return;
+
+  old.classList.remove('active');
+  setTimeout(() => {
+    next.classList.add('active');
+  }, 80);
+
+  currentScene = n;
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === n - 1);
+  });
+
+  // Lanzar corazones al cambiar escena
+  spawnHearts(3, window.innerWidth/2, window.innerHeight/2);
+}
+
+// ============================================================
+// CORAZONES FLOTANTES
+// ============================================================
+const heartEmojis = ['❤️','💕','💗','💖','💞','🤍','💓','🌸'];
+
+function spawnHearts(count, x, y) {
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const h = document.createElement('div');
+      h.className = 'floating-heart';
+      const emoji = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
+      h.textContent = emoji;
+      const spread = (Math.random()-0.5) * 120;
+      const size = Math.random()*18+14;
+      const dur = Math.random()*1.2+2;
+      const rot0 = (Math.random()-0.5)*30 + 'deg';
+      const rot1 = (Math.random()-0.5)*40 + 'deg';
+      h.style.cssText = `
+        left:${x + spread}px; top:${y}px;
+        --size:${size}px; --dur:${dur}s;
+        --rot0:${rot0}; --rot1:${rot1};
+        --color:${['#f4a8c5','#d5b8f0','#fde0ec','#ff8fab','#f7c948'][Math.floor(Math.random()*5)]};
+      `;
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), dur*1000);
+    }, i * 120);
+  }
+}
+
+function spawnManyHearts(x, y) {
+  spawnHearts(10, x, y);
+}
+
+// Sparkles
+function spawnSparkles(x, y, count=5) {
+  const sparks = ['✨','⭐','🌟','💫','🌸'];
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      s.textContent = sparks[Math.floor(Math.random()*sparks.length)];
+      s.style.cssText = `
+        left:${x + (Math.random()-0.5)*80}px;
+        top:${y + (Math.random()-0.5)*60}px;
+        font-size:${Math.random()*12+12}px;
+        animation-delay:${i*0.1}s;
+      `;
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 1000);
+    }, i*80);
+  }
+}
+
+// ============================================================
+// INTERACCIÓN OSITO
+// ============================================================
+let bearHugged = false;
+let bearAnimTimeout = null;
+
+function hugBear() {
+  if (bearAnimTimeout) return;
+  const bc = document.getElementById('bear-container');
+  const rect = bc.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+  spawnHearts(8, cx, cy - 30);
+  spawnSparkles(cx, cy, 4);
+  // Animación breve de bounce
+  bc.style.transform = 'scale(1.1) rotate(3deg)';
+  setTimeout(() => bc.style.transform = '', 300);
+}
+
+function triggerHug() {
+  const bc = document.getElementById('bear-container');
+  const hugMsg = document.getElementById('hug-msg');
+  bc.classList.toggle('hugging');
+  hugMsg.classList.add('show');
+
+  const rect = bc.getBoundingClientRect();
+  spawnHearts(14, rect.left + rect.width/2, rect.top + 40);
+  spawnSparkles(rect.left + rect.width/2, rect.top + 40, 6);
+}
+
+// ============================================================
+// CARIÑITOS
+// ============================================================
+const carinoData = {
+  caricia: {
+    emoji: ['🥰','💕','✨','🌸'],
+    msg: 'Suavecito, para que no se me vaya a despeinar esa cabecita bonita. 🥰',
+    hearts: 6
+  },
+  besito: {
+    emoji: ['😘','💋','💖','💫'],
+    msg: '¡Muak! Ese era suyo y no se aceptan devoluciones. 😘',
+    hearts: 8
+  },
+  abrazo: {
+    emoji: ['🤍','🧸','💞','🌸'],
+    msg: 'Otro más, porque uno nunca es suficiente. Ahorita mismo le mando uno bien apretadito. 🤗',
+    hearts: 10
+  }
+};
+
+function giveCarino(type) {
+  const data = carinoData[type];
+  const bubble = document.getElementById('response-bubble');
+  bubble.style.transform = 'scale(0.95)';
+  bubble.innerHTML = `<span>${data.msg}</span>`;
+  setTimeout(() => bubble.style.transform = '', 200);
+
+  const cx = window.innerWidth/2;
+  const cy = window.innerHeight/2;
+  spawnHearts(data.hearts, cx, cy - 80);
+  spawnSparkles(cx, cy - 80, 5);
+}
+
+// ============================================================
+// SOBRE ANIMADO
+// ============================================================
+let envelopeOpened = false;
+
+function openEnvelope() {
+  if (envelopeOpened) return;
+  envelopeOpened = true;
+  const env = document.getElementById('the-envelope');
+  const reveal = document.getElementById('letter-reveal');
+  const hint = document.getElementById('env-hint');
+
+  env.classList.add('opened');
+  hint.style.opacity = '0';
+
+  // Corazones al abrir
+  const rect = env.getBoundingClientRect();
+  spawnHearts(18, rect.left + rect.width/2, rect.top + 40);
+  spawnSparkles(rect.left + rect.width/2, rect.top + 40, 8);
+
+  setTimeout(() => {
+    reveal.classList.add('show');
+  }, 800);
+}
+
+// ============================================================
+// MÚSICA WEB AUDIO
+// ============================================================
+let audioCtx = null;
+let musicPlaying = false;
+let musicNodes = [];
+let musicGain = null;
+let musicScheduled = false;
+
+function initAudio() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+// Notas de una melodía suave (Hz)
+const melody = [
+  261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 392.00, 349.23,
+  329.63, 293.66, 261.63, 246.94, 261.63, 293.66, 329.63, 392.00
+];
+
+function playNote(freq, startTime, duration, gain) {
+  const osc = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(freq, startTime);
+
+  filter.type = 'lowpass';
+  filter.frequency.value = 800;
+
+  g.gain.setValueAtTime(0, startTime);
+  g.gain.linearRampToValueAtTime(gain, startTime + 0.05);
+  g.gain.setValueAtTime(gain, startTime + duration - 0.08);
+  g.gain.linearRampToValueAtTime(0, startTime + duration);
+
+  osc.connect(filter);
+  filter.connect(g);
+  g.connect(musicGain);
+
+  osc.start(startTime);
+  osc.stop(startTime + duration);
+  musicNodes.push(osc);
+}
+
+let loopTimeout = null;
+
+function scheduleMelody() {
+  if (!musicPlaying || !audioCtx) return;
+  const now = audioCtx.currentTime;
+  const noteLen = 0.55;
+  melody.forEach((freq, i) => {
+    playNote(freq, now + i * noteLen, noteLen * 0.85, 0.06);
+    // Bajo suave
+    if (i % 4 === 0) {
+      playNote(freq * 0.5, now + i * noteLen, noteLen * 1.8, 0.04);
+    }
+  });
+  loopTimeout = setTimeout(scheduleMelody, melody.length * noteLen * 1000 - 200);
+}
+
+function toggleMusic() {
+  const btn = document.getElementById('music-btn');
+  if (!musicPlaying) {
+    initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    musicGain = audioCtx.createGain();
+    musicGain.gain.value = 0.5;
+    musicGain.connect(audioCtx.destination);
+    musicPlaying = true;
+    scheduleMelody();
+    btn.textContent = '🎶';
+    btn.classList.add('playing');
+  } else {
+    musicPlaying = false;
+    if (loopTimeout) clearTimeout(loopTimeout);
+    musicNodes.forEach(n => { try { n.stop(); } catch(e){} });
+    musicNodes = [];
+    if (musicGain) { musicGain.gain.setValueAtTime(0, audioCtx.currentTime); }
+    btn.textContent = '🎵';
+    btn.classList.remove('playing');
+  }
+}
+
+// ============================================================
+// PARTÍCULAS CANVAS (corazones suaves de fondo)
+// ============================================================
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = canvas.height + 20;
+    this.size = Math.random() * 10 + 4;
+    this.speedY = Math.random() * 0.5 + 0.2;
+    this.speedX = (Math.random() - 0.5) * 0.4;
+    this.opacity = Math.random() * 0.12 + 0.04;
+    this.char = ['❤','💕','🤍','💗'][Math.floor(Math.random()*4)];
+  }
+  update() {
+    this.y -= this.speedY;
+    this.x += this.speedX;
+    if (this.y < -20) this.reset();
+  }
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.opacity;
+    ctx.font = `${this.size}px serif`;
+    ctx.fillText(this.char, this.x, this.y);
+    ctx.restore();
+  }
+}
+
+for (let i = 0; i < 18; i++) {
+  const p = new Particle();
+  p.y = Math.random() * canvas.height; // posiciones iniciales variadas
+  particles.push(p);
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ============================================================
+// CLICK EN CUALQUIER PARTE → corazoncitos
+// ============================================================
+document.addEventListener('click', function(e) {
+  // Solo si no es un botón o elemento interactivo
+  const tag = e.target.tagName.toLowerCase();
+  if (tag === 'button' || e.target.closest('button') || e.target.closest('.envelope-wrapper')) return;
+  spawnHearts(2, e.clientX, e.clientY);
+});
+
+// ============================================================
+// SORPRESITA OCULTA: doble tap en estrellas
+// ============================================================
+let tapCount = 0;
+let tapTimer = null;
+document.querySelector('.sky') && document.querySelectorAll('.sky').forEach(sky => {
+  sky.addEventListener('click', function(e) {
+    tapCount++;
+    if (tapCount === 3) {
+      tapCount = 0;
+      spawnHearts(20, e.clientX, e.clientY);
+      spawnSparkles(e.clientX, e.clientY, 10);
+    }
+    clearTimeout(tapTimer);
+    tapTimer = setTimeout(() => tapCount = 0, 600);
+  });
+});
+</script>
+</body>
+</html>
